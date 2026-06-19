@@ -1,0 +1,45 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: certname
+  namespace: default
+spec:
+  secretName: certname-tls
+
+  duration: 2160h     # 90 days
+  renewBefore: 360h   # renew 15 days before expiry
+
+  commonName: certname.local
+  dnsNames:
+    - certname.local
+    - "*.certname.local"   # wildcard if needed
+  ipAddresses:
+    - 10.0.0.1
+    - 192.168.1.50
+    - 127.0.0.1
+    
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+    rotationPolicy: Always  # generate new key on each renewal
+
+  # What lands in the secret:
+  #   tls.crt  — leaf cert + intermediate chain (PEM)
+  #   tls.key  — private key (PEM)
+  #   ca.crt   — issuing CA cert (PEM) — added automatically by CA issuer
+
+  additionalOutputFormats:
+    - type: CombinedPEM  # adds tls-combined.pem = key + full chain, one file
+                         # this is what nginx, haproxy, etc. typically want
+
+  secretTemplate:
+    labels:
+      app: certname
+    annotations:
+      # optional — useful for Reloader or stakater to trigger pod restarts on renewal
+      reloader.stakater.com/match: "true"
+
+  issuerRef:
+    name: ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io

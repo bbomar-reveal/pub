@@ -1,0 +1,5 @@
+argo-rollouts:
+  dashboard:
+    enabled: true
+  notifications:
+    enabled: true
