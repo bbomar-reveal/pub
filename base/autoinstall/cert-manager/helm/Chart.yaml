@@ -7,6 +7,8 @@ appVersion: "1.19.1"
 
 dependencies:
   - name: cert-manager
+    version: "*"
     repository: https://charts.jetstack.io
   - name: trust-manager
+    version: "*"
     repository: https://charts.jetstack.io
