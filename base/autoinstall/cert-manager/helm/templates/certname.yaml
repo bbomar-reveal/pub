@@ -9,10 +9,10 @@ spec:
   duration: 2160h     # 90 days
   renewBefore: 360h   # renew 15 days before expiry
 
-  commonName: certname.local
+  commonName: certname.{{ .Values.domainName }}
   dnsNames:
-    - certname.local
-    - "*.certname.local"   # wildcard if needed
+    - certname.{{ .Values.domainName }}
+    - "*.certname.{{ .Values.domainName }}"   # wildcard if needed
   ipAddresses:
     - 10.0.0.1
     - 192.168.1.50
