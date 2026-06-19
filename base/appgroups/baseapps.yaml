@@ -6,29 +6,23 @@ metadata:
 spec:
   goTemplate: true
   generators:
-  - matrix:
-      generators:
-      - clusters:
-          selector:
-            matchLabels:
-              argocd.argoproj.io/secret-type: cluster
-      - git:
-          repoURL: https://github.com/bbomar-reveal/pub
-          revision: HEAD
-          directories:
-          - path: base/autoinstall/*/helm/
+  - git:
+      repoURL: https://github.com/bbomar-reveal/pub.git
+      revision: HEAD
+      directories:
+      - path: base/autoinstall/*/helm
   template:
     metadata:
-      name: '{{.name}}-{{.path.basename}}'
+      name: '{{index .path.segments 2}}'
     spec:
       project: default
       destination:
-        namespace: '{{.path.basename}}'
-        server: '{{.server}}'
+        namespace: '{{index .path.segments 2}}'
+        server: https://kubernetes.default.svc
       source:
-        repoURL: https://github.com/bbomar-reveal/pub
+        repoURL: https://github.com/bbomar-reveal/pub.git
         targetRevision: HEAD
-        path: 'base/autoinstall/{{.path.basename}}/helm/'
+        path: '{{.path.path}}'
         helm:
           parameters:
             - name: domainName
