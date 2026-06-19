@@ -43,10 +43,10 @@ spec:
     - useDefaultCAs: true
     - secret:
         name: "root-ca-secret"
-        key: "ca.crt"⏎
+        key: "ca.crt"
     target:
         configMap:
-        key: "bundle.pem"
+          key: "bundle.pem"
         namespaceSelector:
-        matchLabels:
-            kubernetes.io/metadata.name: "*"
+          matchLabels:
+              kubernetes.io/metadata.name: "*"
