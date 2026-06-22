@@ -10,5 +10,5 @@ type: Opaque
 stringData:
   type: helm
   name: ghcr-public
-  url: ghcr.io
+  url: ghcr.io/akuity
   enableOCI: "true"
