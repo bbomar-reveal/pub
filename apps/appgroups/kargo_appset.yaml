@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kargoappset
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+  - git:
+      repoURL: https://github.com/bbomar-reveal/pub.git
+      revision: HEAD
+      directories:
+      - path: apps/*/helm
+  template:
+    metadata:
+      name: '{{index .path.segments 1}}'
+    spec:
+      project: default
+      destination:
+        namespace: '{{index .path.segments 2}}'
+        server: https://kubernetes.default.svc
+      source:
+        repoURL: https://github.com/bbomar-reveal/pub.git
+        targetRevision: HEAD
+        path: '{{.path.path}}'
+        helm:
+          parameters:
+            - name: domainName
+              value: "cluster3"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+          allowEmpty: false
+        syncOptions:
+          - CreateNamespace=true
+          - PrunePropagationPolicy=foreground
+          - PruneLast=true
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m
