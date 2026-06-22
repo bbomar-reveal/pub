@@ -10,14 +10,14 @@ spec:
       repoURL: https://github.com/bbomar-reveal/pub.git
       revision: HEAD
       directories:
-      - path: base/autoinstall/*/helm
+      - path: base/autoinstall/*
   template:
     metadata:
-      name: '{{ $segs := .path.segments }}{{ index $segs (sub (len $segs) 2) }}'
+      name: '{{.path.basename}}'
     spec:
       project: default
       destination:
-        namespace: '{{ $segs := .path.segments }}{{ index $segs (sub (len $segs) 2) }}'
+        namespace: '{{.path.basename}}'
         server: https://kubernetes.default.svc
       source:
         repoURL: https://github.com/bbomar-reveal/pub.git
