@@ -13,11 +13,11 @@ spec:
       - path: base/autoinstall/*/helm
   template:
     metadata:
-      name: '{{index .path.segments 2}}'
+      name: '{{index .path.segments 1}}'
     spec:
       project: default
       destination:
-        namespace: '{{index .path.segments 2}}'
+        namespace: '{{index .path.segments 1}}'
         server: https://kubernetes.default.svc
       source:
         repoURL: https://github.com/bbomar-reveal/pub.git
