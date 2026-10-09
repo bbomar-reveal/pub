@@ -40,6 +40,6 @@ spec:
       reloader.stakater.com/match: "true"
 
   issuerRef:
-    name: ca-issuer
+    name: mac-ca
     kind: ClusterIssuer
     group: cert-manager.io
