@@ -1,0 +1,19 @@
+heimdall:
+  ingress:
+    main:
+      enabled: true
+      hosts:
+        - host: home.sharedservices.bob.geocities.com
+          paths:
+            - path: /
+      ingressClassName: traefik
+      annotations:
+        kubernetes.io/ingress.class: traefik
+      tls:
+        enabled: false
+  persistence:
+    config:
+      enabled: true
+  probes:
+    startup:
+      enabled: false

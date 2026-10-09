@@ -1,0 +1,9 @@
+apiVersion: v2
+name: pirate-heimdall
+version: 0.1.5-alpha
+description: heimdall
+
+dependencies:
+  - name: heimdall
+    repository: https://djjudas21.github.io/charts/
+    version: '8.5.4'
