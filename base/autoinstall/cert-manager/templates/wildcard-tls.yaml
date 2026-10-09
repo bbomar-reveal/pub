@@ -7,5 +7,5 @@ spec:
   secretName: wildcard-tls
   issuerRef: { name: mac-ca, kind: ClusterIssuer }
   dnsNames:
-    - {{ .Values.domainName }}
-    - *{{ .Values.domainName }}
+    - "{{ .Values.domainName }}"
+    - "*.{{ .Values.domainName }}"
