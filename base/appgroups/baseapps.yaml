@@ -5,19 +5,26 @@ metadata:
   namespace: argocd
 spec:
   goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
   generators:
-  - git:
-      repoURL: https://github.com/bbomar-reveal/pub.git
-      revision: HEAD
-      directories:
-      - path: base/autoinstall/*
+  - matrix:
+      generators:
+      - clusters:
+          selector:
+            matchExpressions:
+            - { key: cluster, operator: Exists }
+      - git:
+          repoURL: https://github.com/bbomar-reveal/pub.git
+          revision: HEAD
+          directories:
+          - path: base/autoinstall/*
   template:
     metadata:
-      name: '{{.path.basename}}'
+      name: '{{ .path.basename }}'
     spec:
       project: default
       destination:
-        namespace: '{{.path.basename}}'
+        namespace: '{{ .path.basename }}'
         server: https://kubernetes.default.svc
       source:
         repoURL: https://github.com/bbomar-reveal/pub.git
@@ -26,7 +33,7 @@ spec:
         helm:
           parameters:
             - name: domainName
-              value: '{{ index .metadata.labels "cluster" }}.bob.geocities.com'
+              value: '{{ index .metadata.labels "domainName" }}'
       syncPolicy:
         automated:
           prune: true
