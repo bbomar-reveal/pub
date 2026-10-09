@@ -4,4 +4,4 @@ metadata:
   name: mac-ca
 spec:
   ca:
-    secretName: mac-ca-secret
+    secretName: mac-ca
