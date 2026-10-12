@@ -1,0 +1,4 @@
+podinfo:
+  ui:
+    color: "#F5B027"
+    message: prod

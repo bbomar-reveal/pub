@@ -1,0 +1,8 @@
+podinfo:
+  tls:
+    enabled: true
+    secretName: wildcard-tls
+  ingress:
+    enabled: true
+    hosts:
+      - host: podinfo.{{ .Values.global.domainName }}

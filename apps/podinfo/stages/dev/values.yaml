@@ -1,0 +1,4 @@
+podinfo:
+  ui:
+    color: "#F5276C"
+    message: dev
