@@ -48,5 +48,6 @@ spec:
         configMap:
           key: "bundle.pem"
         namespaceSelector:
-          matchLabels:
-              kubernetes.io/metadata.name: "*"
+          matchExpressions:
+          - key: kubernetes.io/metadata.name
+            operator: Exists
