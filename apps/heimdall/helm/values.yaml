@@ -3,14 +3,16 @@ heimdall:
     main:
       enabled: true
       hosts:
-        - host: home.sharedservices.bob.geocities.com
+        - host: home.{{ .Values.domainName }}
           paths:
             - path: /
       ingressClassName: traefik
       annotations:
         kubernetes.io/ingress.class: traefik
       tls:
-        enabled: false
+        - secretName: wildcard-tls
+          hosts:
+            -  home.{{ .Values.domainName }}
   persistence:
     config:
       enabled: true
