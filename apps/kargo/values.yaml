@@ -2,9 +2,12 @@ kargo:
   api:
     host: kargo.sharedservices.bob.geocities.com
     tls:
-      enabled: true    
+      enabled: true
+
     ingress:
       enabled: true
       ingressClassName: traefik
+      tls:
+        selfSignedCert: false
     secret:
       name: kargo-api-secrets

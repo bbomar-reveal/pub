@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kargo-api-ingress-cert
+spec:
+  secretName: kargo-api-ingress-cert
+  dnsNames:
+    - 'kargo.{{ .Values.global.domainName }}'
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: mac-ca
+    kind: ClusterIssuer
+    group: cert-manager.io
