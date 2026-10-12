@@ -3,7 +3,7 @@ heimdall:
     main:
       enabled: true
       hosts:
-        - host: home.{{ .Values.domainName }}
+        - host: home.{{ .Values.global.domainName }}
           paths:
             - path: /
       ingressClassName: traefik
@@ -12,7 +12,7 @@ heimdall:
       tls:
         - secretName: wildcard-tls
           hosts:
-            -  home.{{ .Values.domainName }}
+            -  home.{{ .Values.global.domainName }}
   persistence:
     config:
       enabled: true
