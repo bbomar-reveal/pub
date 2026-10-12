@@ -2,7 +2,7 @@ kargo:
   api:
     host: kargo.{{ .Values.global.domainName }}
     tls:
-      - {}      
+      enabled: true    
     ingress:
       enabled: true
       ingressClassName: traefik

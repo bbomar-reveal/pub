@@ -18,6 +18,7 @@ spec:
           revision: HEAD
           directories:
           - path: apps/heimdall
+          - path: apps/kargo
   template:
     metadata:
       name: '{{ .path.basename }}'
