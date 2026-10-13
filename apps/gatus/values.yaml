@@ -6,7 +6,8 @@ gatus:
       - status.sharedservices.bob.geocities.com
     tls:
       - secretName: wildcard-tls
-        hosts: status.sharedservices.bob.geocities.com
+        hosts: 
+          - status.sharedservices.bob.geocities.com
 
 
   config:
