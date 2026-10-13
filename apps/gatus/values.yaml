@@ -13,6 +13,7 @@ gatus:
   config:
     ui:
       title: "k3d status"
+      default-sort-by: group
     # Shared settings, reused by every endpoint via YAML anchors
     x-web: &web
       interval: 30s
