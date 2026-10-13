@@ -34,11 +34,17 @@ spec:
           valuesObject:
             podinfo:
               ingress:
+                enabled: true
                 hosts:
                   - host: 'podinfo.{{ index .metadata.labels "domainName" }}'
                     paths:
                       - path: /
                         pathType: ImplementationSpecific
+              tls:
+                enabled: true
+                - secretName: wildcard-tls
+                  hosts:
+                    - 'podinfo.{{ index .metadata.labels "domainName" }}'
       destination:
         server: https://kubernetes.default.svc
         namespace: podinfo

@@ -1,4 +1,0 @@
-podinfo:
-  tls:
-    enabled: true
-    secretName: wildcard-tls
