@@ -3,11 +3,11 @@ gatus:
   ingress:
     enabled: true
     hosts: 
-      - status.sharedservices.k3d.local
+      - status.sharedservices.bob.geocities.com
     tls:
       - secretName: wildcard-tls
         hosts: 
-          - status.sharedservices.k3d.local
+          - status.sharedservices.bob.geocities.com
 
 
   config:
