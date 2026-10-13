@@ -24,7 +24,7 @@ gatus:
 
     endpoints:
       # --- sharedservices ---
-      - { name: argocd,  group: sharedservices, url: "https://argocd.sharedservices.bob.geocities.com/healthz", <<: *web }
+      - { name: argocd,  group: sharedservices, url: "https://argocd.sharedservices.bob.geocities.com:8444/healthz", <<: *web }
       - { name: kargo,   group: sharedservices, url: "https://kargo.sharedservices.bob.geocities.com:8444",       <<: *web }
       - { name: heimdall, group: sharedservices, url: "https://home.sharedservices.bob.geocities.com:8444",   <<: *web }
       # --- dev ---
