@@ -19,6 +19,7 @@ spec:
           directories:
           - path: apps/heimdall
           - path: apps/kargo
+          - path: apps/gatus
   template:
     metadata:
       name: '{{ .path.basename }}'
