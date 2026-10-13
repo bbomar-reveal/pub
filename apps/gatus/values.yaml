@@ -35,4 +35,4 @@ gatus:
       - { name: podinfo, group: uat, url: "https://podinfo.uat.bob.geocities.com:8446/readyz",  <<: *web }
       # --- prod ---
       - { name: argocd,  group: prod, url: "https://argocd.prod.bob.geocities.com:8447/healthz", <<: *web }
-      - { name: podinfo, group: prod, url: "https://podinfo.prod.bob.geocities.com:8447readyz", <<: *web }
+      - { name: podinfo, group: prod, url: "https://podinfo.prod.bob.geocities.com:8447/readyz", <<: *web }
