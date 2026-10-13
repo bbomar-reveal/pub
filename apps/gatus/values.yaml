@@ -1,35 +1,36 @@
-# values.yaml
-ingress:
-  enabled: true
-  hosts: status.sharedservices.bob.geocities.com
-  tls:
-    - secretName: wildcard-tls
-      hosts: status.sharedservices.bob.geocities.com
+gatus:
+  # values.yaml
+  ingress:
+    enabled: true
+    hosts: status.sharedservices.bob.geocities.com
+    tls:
+      - secretName: wildcard-tls
+        hosts: status.sharedservices.bob.geocities.com
 
 
-config:
-  ui:
-    title: "k3d status"
-  # Shared settings, reused by every endpoint via YAML anchors
-  x-web: &web
-    interval: 30s
-    client:
-      insecure: true          # quick start; see the CA note below to drop this
-    conditions:
-      - "[STATUS] == 200"
-      - "[RESPONSE_TIME] < 1000"
+  config:
+    ui:
+      title: "k3d status"
+    # Shared settings, reused by every endpoint via YAML anchors
+    x-web: &web
+      interval: 30s
+      client:
+        insecure: true          # quick start; see the CA note below to drop this
+      conditions:
+        - "[STATUS] == 200"
+        - "[RESPONSE_TIME] < 1000"
 
-  endpoints:
-    # --- sharedservices ---
-    - { name: argocd,  group: sharedservices, url: "https://argocd.sharedservices.bob.geocities.com:8444/healthz", <<: *web }
-    - { name: kargo,   group: sharedservices, url: "https://kargo.sharedservices.bob.geocities.com:8444",       <<: *web }
-    - { name: heimdall, group: sharedservices, url: "https://home.sharedservices.bob.geocities.com:8444",   <<: *web }
-    # --- dev ---
-    - { name: argocd,  group: dev, url: "https://argocd.dev.bob.geocities.com:8445/healthz",  <<: *web }
-    - { name: podinfo, group: dev, url: "https://podinfo.dev.bob.geocities.com:8445/readyz",  <<: *web }
-    # --- uat ---
-    - { name: argocd,  group: uat, url: "https://argocd.uat.bob.geocities.com:8446/healthz",  <<: *web }
-    - { name: podinfo, group: uat, url: "https://podinfo.uat.bob.geocities.com:8446/readyz",  <<: *web }
-    # --- prod ---
-    - { name: argocd,  group: prod, url: "https://argocd.prod.bob.geocities.com:8447/healthz", <<: *web }
-    - { name: podinfo, group: prod, url: "https://podinfo.prod.bob.geocities.com:8447readyz", <<: *web }
+    endpoints:
+      # --- sharedservices ---
+      - { name: argocd,  group: sharedservices, url: "https://argocd.sharedservices.bob.geocities.com:8444/healthz", <<: *web }
+      - { name: kargo,   group: sharedservices, url: "https://kargo.sharedservices.bob.geocities.com:8444",       <<: *web }
+      - { name: heimdall, group: sharedservices, url: "https://home.sharedservices.bob.geocities.com:8444",   <<: *web }
+      # --- dev ---
+      - { name: argocd,  group: dev, url: "https://argocd.dev.bob.geocities.com:8445/healthz",  <<: *web }
+      - { name: podinfo, group: dev, url: "https://podinfo.dev.bob.geocities.com:8445/readyz",  <<: *web }
+      # --- uat ---
+      - { name: argocd,  group: uat, url: "https://argocd.uat.bob.geocities.com:8446/healthz",  <<: *web }
+      - { name: podinfo, group: uat, url: "https://podinfo.uat.bob.geocities.com:8446/readyz",  <<: *web }
+      # --- prod ---
+      - { name: argocd,  group: prod, url: "https://argocd.prod.bob.geocities.com:8447/healthz", <<: *web }
+      - { name: podinfo, group: prod, url: "https://podinfo.prod.bob.geocities.com:8447readyz", <<: *web }
