@@ -1,0 +1,14 @@
+kargo:
+  api:
+    enabled: false
+  managementController:
+    enabled: false
+  webhooksServer:
+    enabled: false
+  externalWebhooksServer:
+    enabled: false
+  garbageCollector:
+    enabled: false
+  controller:
+    enabled: true
+    shardName: dev

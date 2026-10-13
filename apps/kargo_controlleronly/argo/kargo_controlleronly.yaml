@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kargo-controlleronly
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - { key: cluster, operator: In, values: [dev, uat, prod] }
+  template:
+    metadata:
+      name: kargo-controlleronly
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/bbomar-reveal/pub.git
+        targetRevision: HEAD
+        path: 'apps/kargo_controlleronly/helm'
+        helm:
+          parameters:
+            - name: domainName
+              value: '{{ index .metadata.labels "domainName" }}'
+            - name: global.domainName
+              value: '{{ index .metadata.labels "domainName" }}'
+            - name: cluster
+              value: '{{ index .metadata.labels "cluster" }}'
+          valueFiles:
+            - values.yaml
+          valuesObject:
+            kargo:
+              controller:
+                shardName: '{{ index .metadata.labels "cluster" }}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: kargo
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true

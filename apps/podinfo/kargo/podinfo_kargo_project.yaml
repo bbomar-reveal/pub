@@ -1,0 +1,40 @@
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Project
+metadata:
+  name: podinfo
+  namespace: podinfo
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: ProjectConfig
+metadata:
+  name: podinfo
+  namespace: podinfo
+spec:
+  promotionPolicies:
+  - stageSelector:
+      matchLabels:
+        cluster: dev
+    autoPromotionEnabled: false
+  - stageSelector:
+      matchLabels:
+        cluster: uat
+    autoPromotionEnabled: false
+  - stageSelector:
+      matchLabels:
+        cluster: prod
+    autoPromotionEnabled: false
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: podinfo
+  namespace: podinfo
+spec:
+  subscriptions:
+  - name: podinfo
+    git:
+      repoURL: https://github.com/bbomar-reveal/pub.git
+      branch: main
+      includePaths:
+      - apps/podinfo
