@@ -11,4 +11,5 @@ kargo:
     enabled: false
   controller:
     enabled: true
-    
+  kubeconfigSecrets:
+    kargo: kargo-cp-kubeconfig
