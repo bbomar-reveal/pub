@@ -2,3 +2,5 @@ podinfo:
   ui:
     color: "#F54927"
     message: uat
+  image:
+    tag: 6.10.1
