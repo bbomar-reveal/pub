@@ -3,4 +3,4 @@ podinfo:
     color: "#F5B027"
     message: prod
   image:
-    tag: 6.10.2
+    tag: 6.10.1
