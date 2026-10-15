@@ -1,0 +1,48 @@
+{{- range $shard := .Values.shards }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kargo-controller-{{ $shard }}
+  namespace: kargo
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kargo-controller-{{ $shard }}-token
+  namespace: kargo
+  annotations:
+    kubernetes.io/service-account.name: kargo-controller-{{ $shard }}
+type: kubernetes.io/service-account-token
+{{- range $role := $.Values.controllerClusterRoles }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ $role }}-{{ $shard }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ $role }}
+subjects:
+- kind: ServiceAccount
+  name: kargo-controller-{{ $shard }}
+  namespace: kargo
+{{- end }}
+{{- range $role := $.Values.controllerRoles }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $role.name }}-{{ $shard }}
+  namespace: {{ $role.namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $role.name }}
+subjects:
+- kind: ServiceAccount
+  name: kargo-controller-{{ $shard }}
+  namespace: kargo
+{{- end }}
+{{- end }}

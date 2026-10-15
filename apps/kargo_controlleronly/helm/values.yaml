@@ -11,4 +11,4 @@ kargo:
     enabled: false
   controller:
     enabled: true
-    shardName: dev
+    

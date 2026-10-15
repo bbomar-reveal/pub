@@ -1,3 +1,17 @@
+shards: [dev, uat, prod]
+controllerClusterRoles:
+  - kargo-controller
+  - kargo-controller-argocd
+  - kargo-controller-rollouts
+
+controllerRoles:
+  - namespace: kargo
+    name: kargo-controller
+  - namespace: kargo-shared-resources
+    name: kargo-shared-resources-controller-reader
+  - namespace: kargo-system-resources
+    name: kargo-system-resources-reader
+
 kargo:
   api:
     host: kargo.sharedservices.bob.geocities.com
