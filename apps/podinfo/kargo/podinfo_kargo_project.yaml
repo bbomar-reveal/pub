@@ -1,9 +1,15 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: podinfo
+  labels:
+    kargo.akuity.io/project: "true"
+---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Project
 metadata:
   name: podinfo
-  namespace: podinfo
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: ProjectConfig
@@ -32,9 +38,58 @@ metadata:
   namespace: podinfo
 spec:
   subscriptions:
-  - name: podinfo
-    git:
-      repoURL: https://github.com/bbomar-reveal/pub.git
-      branch: main
-      includePaths:
-      - apps/podinfo
+  - image:
+      repoURL: ghcr.io/stefanprodan/podinfo
+      imageSelectionStrategy: SemVer
+      constraint: ^6.0.0
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: dev
+  namespace: podinfo
+  labels:
+    cluster: dev            # matches your ProjectConfig policy
+spec:
+  shard: dev
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: podinfo
+    sources:
+      direct: true
+  promotionTemplate:
+    spec:
+      vars:
+      - name: repo
+        value: https://github.com/bbomar-reveal/pub.git
+      - name: image
+        value: ghcr.io/stefanprodan/podinfo
+      steps:
+      - uses: git-clone
+        config:
+          repoURL: ${{ vars.repo }}
+          checkout:
+          - branch: main
+            path: ./src
+      - uses: yaml-update
+        config:
+          path: ./src/apps/podinfo/stages/dev/values.yaml
+          updates:
+          - key: podinfo.image.tag
+            value: ${{ imageFrom(vars.image).Tag }}
+      - uses: git-commit
+        as: commit
+        config:
+          path: ./src
+          message: "podinfo dev → ${{ imageFrom(vars.image).Tag }}"
+      - uses: git-push
+        config:
+          path: ./src
+      - uses: argocd-update
+        config:
+          apps:
+          - name: podinfo
+            sources:
+            - repoURL: ${{ vars.repo }}
+              desiredRevision: ${{ outputs.commit.commit }}

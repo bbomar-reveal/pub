@@ -5,6 +5,8 @@ kind: ServiceAccount
 metadata:
   name: kargo-controller-{{ $shard }}
   namespace: kargo
+  labels:
+    app.kubernetes.io/component: controller
 ---
 apiVersion: v1
 kind: Secret
