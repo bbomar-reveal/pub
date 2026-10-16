@@ -29,7 +29,7 @@ spec:
   - stageSelector:
       matchLabels:
         cluster: prod
-    autoPromotionEnabled: false
+    autoPromotionEnabled: true
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
@@ -127,6 +127,58 @@ spec:
       - uses: yaml-update
         config:
           path: ./src/apps/podinfo/stages/uat/values.yaml
+          updates:
+          - key: podinfo.image.tag
+            value: ${{ imageFrom(vars.image).Tag }}
+      - uses: git-commit
+        as: commit
+        config:
+          path: ./src
+          message: "podinfo uat → ${{ imageFrom(vars.image).Tag }}"   # was "dev →"
+      - uses: git-push
+        config:
+          path: ./src
+      - uses: argocd-update
+        config:
+          apps:
+          - name: podinfo
+            sources:
+            - repoURL: ${{ vars.repo }}
+              desiredRevision: ${{ outputs.commit.commit }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: prod
+  namespace: podinfo
+  labels:
+    cluster: prod
+spec:
+  shard: prod                      # was "dev"
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: podinfo
+    sources:
+      stages:
+      - uat                       # was "direct: true"
+  promotionTemplate:
+    spec:
+      vars:
+      - name: repo
+        value: https://github.com/bbomar-reveal/pub.git
+      - name: image
+        value: ghcr.io/stefanprodan/podinfo
+      steps:
+      - uses: git-clone
+        config:
+          repoURL: ${{ vars.repo }}
+          checkout:
+          - branch: main
+            path: ./src
+      - uses: yaml-update
+        config:
+          path: ./src/apps/podinfo/stages/prod/values.yaml
           updates:
           - key: podinfo.image.tag
             value: ${{ imageFrom(vars.image).Tag }}
