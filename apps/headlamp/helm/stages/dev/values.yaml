@@ -1,4 +1,6 @@
 headlamp:
+  config:
+    unsafeUseServiceAccountToken: true
   ingress:
     enabled: true
     hosts:
