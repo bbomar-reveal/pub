@@ -1,5 +1,7 @@
 headlamp:
   config:
+    extraArgs:
+      - --unsafe-use-service-account-token
     unsafeUseServiceAccountToken: true
   ingress:
     enabled: true

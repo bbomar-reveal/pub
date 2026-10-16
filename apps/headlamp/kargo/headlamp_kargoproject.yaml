@@ -77,6 +77,7 @@ spec:
         path: ./out
         message: ${{ vars.app }} ${{ ctx.stage }} → ${{ chartFrom(vars.chartRepo, vars.app).Version }}
     - uses: git-push
+      as: push
       config:
         path: ./out
     - uses: argocd-update
@@ -85,7 +86,7 @@ spec:
           - name: ${{ vars.argoApp }}
             sources:
               - repoURL: ${{ vars.gitRepo }}
-                desiredRevision: ${{ outputs.commit.commit }}
+                desiredRevision: ${{ task.outputs.push.commit }}
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
@@ -93,6 +94,7 @@ metadata:
   name: dev
   namespace: headlamp
 spec:
+  shard: dev
   requestedFreight:
     - origin:
         kind: Warehouse
@@ -106,7 +108,7 @@ spec:
             name: promote-chart
           vars:
             - name: argoApp
-              value: headlamp-dev
+              value: headlamp
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
@@ -114,6 +116,7 @@ metadata:
   name: uat
   namespace: headlamp
 spec:
+  shard: uat
   requestedFreight:
     - origin:
         kind: Warehouse
@@ -127,7 +130,7 @@ spec:
             name: promote-chart
           vars:
             - name: argoApp
-              value: headlamp-uat
+              value: headlamp
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
@@ -135,6 +138,7 @@ metadata:
   name: prod
   namespace: headlamp
 spec:
+  shard: prod
   requestedFreight:
     - origin:
         kind: Warehouse
@@ -148,4 +152,4 @@ spec:
             name: promote-chart
           vars:
             - name: argoApp
-              value: headlamp-prod          
+              value: headlamp      
