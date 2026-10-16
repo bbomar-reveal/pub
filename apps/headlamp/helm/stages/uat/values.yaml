@@ -3,6 +3,9 @@ headlamp:
     enabled: true
     hosts:
       - host: self.uat.bob.geocities.com
+        paths:
+        - path: /
+          type: ImplementationSpecific      
     tls:
       - secretName: wildcard-tls
         hosts:
