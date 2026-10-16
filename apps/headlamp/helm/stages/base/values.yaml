@@ -1,0 +1,9 @@
+headlamp:
+  ingress:
+    enabled: true
+    hosts:
+      - host: self.
+    tls:
+      - secretName: wildcard-tls
+        hosts:
+          - self.

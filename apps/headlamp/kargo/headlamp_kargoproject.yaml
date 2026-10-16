@@ -1,0 +1,151 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: headlamp
+  labels:
+    kargo.akuity.io/project: "true"
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Project
+metadata:
+  name: headlamp
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: ProjectConfig
+metadata:
+  name: headlamp
+  namespace: headlamp
+spec:
+  promotionPolicies:
+  - stageSelector:
+      matchLabels:
+        cluster: dev
+    autoPromotionEnabled: false
+  - stageSelector:
+      matchLabels:
+        cluster: uat
+    autoPromotionEnabled: false
+  - stageSelector:
+      matchLabels:
+        cluster: prod
+    autoPromotionEnabled: true
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: headlamp
+  namespace: headlamp
+spec:
+  subscriptions:
+    - chart:
+        repoURL: https://kubernetes-sigs.github.io/headlamp/
+        name: headlamp
+        semverConstraint: ">=0.30.0" 
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: promote-chart
+  namespace: headlamp
+spec:
+  vars:
+    - name: gitRepo
+      value: https://github.com/bbomar-reveal/pub.git
+    - name: app
+      value: headlamp
+    - name: chartRepo
+      value: https://kubernetes-sigs.github.io/headlamp/
+    - name: argoApp      # no default, each stage sets it
+  steps:
+    - uses: git-clone
+      config:
+        repoURL: ${{ vars.gitRepo }}
+        checkout:
+          - branch: main
+            path: ./out
+    - uses: helm-update-chart
+      config:
+        path: ./out/apps/${{ vars.app }}/helm/stages/${{ ctx.stage }}
+        charts:
+          - repository: ${{ vars.chartRepo }}
+            name: ${{ vars.app }}
+            version: ${{ chartFrom(vars.chartRepo, vars.app).Version }}
+    - uses: git-commit
+      as: commit
+      config:
+        path: ./out
+        message: ${{ vars.app }} ${{ ctx.stage }} → ${{ chartFrom(vars.chartRepo, vars.app).Version }}
+    - uses: git-push
+      config:
+        path: ./out
+    - uses: argocd-update
+      config:
+        apps:
+          - name: ${{ vars.argoApp }}
+            sources:
+              - repoURL: ${{ vars.gitRepo }}
+                desiredRevision: ${{ outputs.commit.commit }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: dev
+  namespace: headlamp
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: headlamp
+      sources:
+        direct: true
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promote-chart
+          vars:
+            - name: argoApp
+              value: headlamp-dev
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: uat
+  namespace: headlamp
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: headlamp
+      sources:
+        stages: [dev]
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promote-chart
+          vars:
+            - name: argoApp
+              value: headlamp-uat
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: prod
+  namespace: headlamp
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: headlamp
+      sources:
+        stages: [uat]
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: promote-chart
+          vars:
+            - name: argoApp
+              value: headlamp-prod          

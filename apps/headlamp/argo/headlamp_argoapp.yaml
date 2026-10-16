@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: headlamp
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchExpressions:
+            - { key: cluster, operator: In, values: [dev, uat, prod] }
+  template:
+    metadata:
+      name: headlamp
+      annotations:
+        kargo.akuity.io/authorized-stage: headlamp:{{ index .metadata.labels "cluster" }}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/bbomar-reveal/pub.git
+        targetRevision: HEAD
+        path: 'apps/headlamp/helm/stages/{{ index .metadata.labels "cluster" }}'
+        helm:
+          parameters:
+            - name: domainName
+              value: '{{ index .metadata.labels "domainName" }}'
+            - name: global.domainName
+              value: '{{ index .metadata.labels "domainName" }}'
+          valueFiles:
+            #- ../../base/values.yaml
+            - values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: headlamp
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true

@@ -1,0 +1,9 @@
+headlamp:
+  ingress:
+    enabled: true
+    hosts:
+      - host: self.dev.bob.geocities.com
+    tls:
+      - secretName: wildcard-tls
+        hosts:
+          - self.dev.bob.geocities.com
