@@ -1,6 +1,6 @@
 dependencies:
 - name: headlamp
   repository: https://kubernetes-sigs.github.io/headlamp/
-  version: 0.37.0
-digest: sha256:74d27733c76b0deab56e3e496fa8139cee522f4c49f0cc85fec8acddbf870fef
-generated: "2026-10-20T15:46:39.961482416Z"
+  version: 0.38.0
+digest: sha256:3f4c6bb308a1e5e757368ea9eee902d5ade7d33881c0f6c8402d6ed41641e260
+generated: "2026-10-20T15:59:10.772484733Z"
