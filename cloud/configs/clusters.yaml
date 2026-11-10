@@ -1,0 +1,25 @@
+defaults:
+  ctlNodesNum: 1
+  wrkNodesNum: 0
+  k3s_version: v1.35.5-k3s1
+  shared-services: local-sharedsvcs
+  domain-name: bob.geocities.com
+  roles: [base]
+
+clusters:
+  local-sharedsvcs:
+    numId: "0"
+    shard-name: "sharedservices"
+    roles: [kargo-control-plane]
+  local-dev:
+    numId: "1"
+    shard-name: "dev"
+    roles: [kargo-controller]
+  local-uat:
+    numId: "2"
+    shard-name: "uat"
+    roles: [kargo-controller]
+  local-prod:
+    numId: "3"
+    shard-name: "prod"
+    roles: [kargo-controller]

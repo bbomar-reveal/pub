@@ -41,7 +41,7 @@ spec:
     - chart:
         repoURL: https://kubernetes-sigs.github.io/headlamp/
         name: headlamp
-        semverConstraint: ">=0.30.0" 
+        #semverConstraint: ">=0.30.0" 
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionTask
@@ -93,6 +93,8 @@ kind: Stage
 metadata:
   name: dev
   namespace: headlamp
+  labels:
+    cluster: dev
 spec:
   shard: dev
   requestedFreight:
@@ -115,6 +117,8 @@ kind: Stage
 metadata:
   name: uat
   namespace: headlamp
+  labels:
+    cluster: uat
 spec:
   shard: uat
   requestedFreight:
@@ -137,6 +141,8 @@ kind: Stage
 metadata:
   name: prod
   namespace: headlamp
+  labels:
+    cluster: prod
 spec:
   shard: prod
   requestedFreight:
