@@ -2,6 +2,7 @@ kubeshark:
   tap:
     ingress:
       enabled: true
+      host: kubeshark.sharedservices.bob.geocities.com
     tls:
       - secretName: wildcard-tls
         hosts:
