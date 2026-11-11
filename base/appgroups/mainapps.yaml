@@ -21,6 +21,7 @@ spec:
           - path: apps/kargo
           - path: apps/gatus
           - path: apps/kubeshark
+          - path: apps/argo-rollouts
   template:
     metadata:
       name: '{{ .path.basename }}'
