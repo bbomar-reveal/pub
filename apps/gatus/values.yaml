@@ -28,6 +28,8 @@ gatus:
       - { name: argocd,  group: sharedservices, url: "https://argocd.sharedservices.bob.geocities.com:8448/healthz", <<: *web }
       - { name: kargo,   group: sharedservices, url: "https://kargo.sharedservices.bob.geocities.com:8448",       <<: *web }
       - { name: heimdall, group: sharedservices, url: "https://home.sharedservices.bob.geocities.com:8448",   <<: *web }
+      - { name: kubeshark, group: sharedservices, url: "https://kubeshark.sharedservices.bob.geocities.com:8448",   <<: *web }
+
       # --- dev ---
       - { name: argocd,  group: dev, url: "https://argocd.dev.bob.geocities.com:8449/healthz",  <<: *web }
       - { name: podinfo, group: dev, url: "https://podinfo.dev.bob.geocities.com:8449/readyz",  <<: *web }
