@@ -1,15 +1,16 @@
 argo-rollouts:
-  dashboard:
-    enabled: true
+
   notifications:
     enabled: true
     secret:
       create: true
-  ingress:
+  dashboard:
     enabled: true
-    hosts:
-      - argorollouts.sharedservices.bob.geocities.com
-    tls:
-      - secretName: wildcard-tls
-        hosts:
-          - argorollouts.sharedservices.bob.geocities.com
+    ingress:
+      enabled: true
+      hosts:
+        - argorollouts.sharedservices.bob.geocities.com
+      tls:
+        - secretName: wildcard-tls
+          hosts:
+            - argorollouts.sharedservices.bob.geocities.com
