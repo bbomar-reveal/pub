@@ -20,6 +20,7 @@ spec:
           - path: apps/heimdall
           - path: apps/kargo
           - path: apps/gatus
+          - path: apps/kubeshark
   template:
     metadata:
       name: '{{ .path.basename }}'
