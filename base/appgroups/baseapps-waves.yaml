@@ -18,6 +18,7 @@ spec:
             - { app: reflector, path: base/autoinstall/reflector, wave: "0"}
             - { app: external-secrets, path: base/autoinstall/external-secrets, wave: "1"}
             - { app: cert-manager, path: base/autoinstall/cert-manager, wave: "0"}
+            - { app: manifests, path: base/autoinstall/manifests, wave: "1"}
   template:
     metadata:
       name: '{{ .app }}'
