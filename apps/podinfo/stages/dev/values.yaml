@@ -3,4 +3,4 @@ podinfo:
     color: "#F5276C"
     message: dev
   image:
-    tag: 6.14.1
+    tag: 6.17.0
