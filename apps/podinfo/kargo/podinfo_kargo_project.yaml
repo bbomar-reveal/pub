@@ -70,7 +70,7 @@ spec:
         config:
           repoURL: ${{ vars.repo }}
           checkout:
-          - branch: main
+          - branch: dev
             path: ./src
       - uses: yaml-update
         config:
@@ -122,7 +122,7 @@ spec:
         config:
           repoURL: ${{ vars.repo }}
           checkout:
-          - branch: main
+          - branch: uat
             path: ./src
       - uses: yaml-update
         config:
@@ -174,7 +174,7 @@ spec:
         config:
           repoURL: ${{ vars.repo }}
           checkout:
-          - branch: main
+          - branch: prod
             path: ./src
       - uses: yaml-update
         config:
