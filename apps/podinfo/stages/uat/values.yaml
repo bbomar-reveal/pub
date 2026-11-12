@@ -3,4 +3,4 @@ podinfo:
     color: "#F54927"
     message: uat
   image:
-    tag: 6.17.0
+    tag: 6.11.0
