@@ -15,3 +15,5 @@ make the changes.
 6. Create the argo app, install it
 7. Create the kargo project, install it
 8. git creds in each namespace kargo operates in
+
+uat
