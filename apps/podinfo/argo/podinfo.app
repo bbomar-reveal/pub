@@ -20,7 +20,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/bbomar-reveal/pub.git
-        targetRevision: HEAD
+        targetRevision: '{{ index .metadata.labels "cluster" }}'
         path: 'apps/podinfo/stages/{{ index .metadata.labels "cluster" }}'
         helm:
           parameters:

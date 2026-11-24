@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kargo
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kargo
+  source:
+    repoURL: ghcr.io/akuity/kargo-charts   # repo registered with enableOCI: "true"
+    chart: kargo
+    targetRevision: 1.12.6                  # verify tag format
+    helm:
+      valuesObject:
+        api:
+          host: kargo-ss.revealglobal.cloud
+          tls:
+            enabled: false                  # Traefik terminates TLS
+          ingress:
+            enabled: true
+            ingressClassName: traefik-private
+            annotations:
+              cert-manager.io/cluster-issuer: <your-issuer>
+            tls:
+              enabled: true
+              selfSignedCert: false
+          secret:
+            name: kargo-api-secrets         # verify key against chart values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - PrunePropagationPolicy=background
+      - PruneLast=true

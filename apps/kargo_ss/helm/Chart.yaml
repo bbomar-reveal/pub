@@ -1,0 +1,13 @@
+apiVersion: v2
+name: kargo-stack
+description: Kargo Stack
+type: application
+version: 1.0.3
+maintainers:
+  - name: Reveal-Brainspace
+    email: info@revealdata.com
+    url: https://revealdata.com
+dependencies:
+  - name: kargo
+    version: 1.12.6
+    repository: oci://ghcr.io/akuity/kargo-charts

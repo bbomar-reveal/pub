@@ -69,5 +69,10 @@ resource "k3d_cluster" "thiscluster" {
       arg          = "--node-label=bob/cluster=${var.cluster_values.shard-name}"
       node_filters = ["server:*", "agent:*"]
     }
+    extra_args {
+      arg          = "--node-label=bob/roles=${var.cluster_values.roles}"
+      node_filters = ["server:*", "agent:*"]
+    }
   }
 }
+

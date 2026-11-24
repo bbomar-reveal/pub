@@ -1,0 +1,12 @@
+kargo:
+  api:
+    host: kargo-ss.revealglobal.cloud
+    tls:
+      enabled: false
+    ingress:
+      enabled: true
+      ingressClassName: traefik-private
+      tls:
+        enabled: true
+    secret:
+      name: kargo-api-secrets
