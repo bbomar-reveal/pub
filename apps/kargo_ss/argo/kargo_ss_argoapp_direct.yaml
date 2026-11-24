@@ -9,9 +9,9 @@ spec:
     server: https://kubernetes.default.svc
     namespace: kargo
   source:
-    repoURL: http://helm-ops.reveal11.cloud/
-    targetRevision: 1.0.3
-    path: kargo
+    repoURL: https://github.com/bbomar-reveal/pub.git
+    targetRevision: main
+    path: apps/kargo_ss/helm
     helm:
       releaseName: kargo
       valueFiles:
