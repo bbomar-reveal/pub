@@ -8,5 +8,6 @@ kargo:
       ingressClassName: traefik-private
       tls:
         enabled: true
+        selfSignedCert: false
     secret:
       name: kargo-api-secrets
